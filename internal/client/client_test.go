@@ -156,9 +156,11 @@ func TestHandleConn(t *testing.T) {
 	}()
 
 	remoteConn1, remoteConn2 := net.Pipe()
+	defer remoteConn1.Close()
+	defer remoteConn2.Close()
 
 	deadline := time.Now().Add(100 * time.Millisecond)
-	remoteConn2.SetReadDeadline(deadline)
+	remoteConn2.SetDeadline(deadline)
 
 	go s.handleConn(remoteConn1, port)
 
